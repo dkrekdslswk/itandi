@@ -15,9 +15,9 @@ class Dihanki
     #自販機の売上金額
     @sales = 0
     #ドリンクの情報[ドリンクの番号][0：名、1：値段、2：在庫、[3：状態]]
-    @drink_list = [['コーラ', 120, 5],
-                    ['レッドブル', 200, 5],
-                    ['水', 100, 5]]
+    @drink_list = [['コーラ', 120, 5,],
+                    ['レッドブル', 200, 5,],
+                    ['水', 100, 5,]]
   end
 
   #return 現在のお客様が投入したお金
@@ -84,7 +84,7 @@ class Dihanki
         @money -= drink[1]
         @sales += drink[1]
         #今はputsですが、ここに出る作業が入ります。
-        puts 'buy drink : ' + drink[0]
+        puts '= buy drink : ' + drink[0]
         
         #購入した場合、残ったお金を全部払い戻しする。
         refundAllMoney()
@@ -103,7 +103,7 @@ class Dihanki
   # TODO: 直接呼ぶのは思えません。
   private def refundMoney(refund_money)
     #今はputsですが、ここに出る作業が入ります。
-    puts 'ref money : ' + refund_money.to_s
+    puts '= ref money : ' + refund_money.to_s
   end
 end
 
@@ -114,6 +114,7 @@ dihanki = Dihanki.new()
 command = ''
 
 while command != 'end'
+  puts '===================='
   puts '[drinkNumber]'
   drink_number = 0
   inhabitable_drink_list = dihanki.viewInhabitableDrinkList()
@@ -126,19 +127,23 @@ while command != 'end'
     puts '[' + drink_number.to_s + ']' + drink[0] + '(' + drink[1].to_s + '￥) 残り : ' + drink[2].to_s + ' '+ drink[3]
     drink_number += 1
   end
+  puts '======  data  ======'
   puts 'dihanki sales = ' + dihanki.viewSales().to_s
-  puts '---commands---'
-  puts '[number]         : putMoney'
-  puts 'get[drinkNumber] : drink buying'
+  puts 'user money  = ' + dihanki.viewMoney().to_s
+  puts '====  commands  ===='
+  puts '[number]         : putMoney       (例:10,50,100,500,1000)'
+  puts 'get[drinkNumber] : drink buying   (例:get0)'
   puts 'ref              : refund all money'
   puts 'end              : end'
-  puts 'saving money  = ' + dihanki.viewMoney().to_s
+  puts '===================='
   print 'command : '
   command = gets.chomp
-  
+
+  puts '===================='
   if command == 'ref'
     dihanki.refundAllMoney
   elsif command == 'end'
+    puts 'Bye~'
   elsif command[0, 3] == 'get'
     if  command[3, command.length].integer?
       dihanki.buyingDrink(command[3, command.length].to_i)
@@ -148,8 +153,8 @@ while command != 'end'
   else 
     puts 'bad command'
   end
-  
+
+  puts '===================='
   puts
   
 end
-puts 'Bye~'
