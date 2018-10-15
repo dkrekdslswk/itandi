@@ -121,10 +121,12 @@ while command != 'end'
   inhabitable_count = 0
   dihanki.viewDrinkList().each() do |drink|
     if drink_number == inhabitable_drink_list[inhabitable_count]
-      print '-'
+      print '*'
       inhabitable_count += 1
+    else
+      print ' '
     end
-    puts '[' + drink_number.to_s + ']' + drink[0] + '(' + drink[1].to_s + '￥) 残り : ' + drink[2].to_s + ' '+ drink[3]
+    puts '[' + drink_number.to_s + '] ' + drink[3] + ' - ' + drink[0] + '(' + drink[1].to_s + '￥) 残り : ' + drink[2].to_s
     drink_number += 1
   end
   puts '======  data  ======'
@@ -139,6 +141,7 @@ while command != 'end'
   print 'command : '
   command = gets.chomp
 
+  puts
   puts '===================='
   if command == 'ref'
     dihanki.refundAllMoney
@@ -153,8 +156,5 @@ while command != 'end'
   else 
     puts 'bad command'
   end
-
-  puts '===================='
-  puts
   
 end
