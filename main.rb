@@ -126,7 +126,7 @@ while command != 'end'
     else
       print ' '
     end
-    puts '[' + drink_number.to_s + '] ' + drink[3] + ' - ' + drink[0] + '(' + drink[1].to_s + '￥) 残り : ' + drink[2].to_s
+    puts '[' + drink_number.to_s + '] ' + drink[3] + ' - ' + drink[0] + '(' + drink[1].to_s + '￥) stock : ' + drink[2].to_s
     drink_number += 1
   end
   puts '======  data  ======'
