@@ -1,3 +1,5 @@
+#wwww
+
 #StringがIntegerかを確認するための設定
 class String
   def integer?
@@ -24,14 +26,14 @@ class Dihanki
   def viewMoney()
     return @money
   end
-  
+
   #お金の投入
   #10,50,100,500,1000以外のが投入された場合は、投入金額に加算せず、それをそのまま釣り銭としてユーザに出力する。
   def putMoney(arg_money)
     case arg_money
       when 10, 50, 100, 500, 1000
         @money += arg_money
-    else 
+    else
       refundMoney(arg_money)
     end
   end
@@ -50,7 +52,7 @@ class Dihanki
     end
     return @drink_list
   end
-  
+
   #購入できるドリンクリストのドリンク番号を出す。
   def viewInhabitableDrinkList()
     drink_list = self.viewDrinkList()
@@ -66,7 +68,7 @@ class Dihanki
     end
     return inhabitable_drink_list
   end
-  
+
   #自販機の売上金額を出す。
   def viewSales()
     return @sales
@@ -78,27 +80,27 @@ class Dihanki
   def buyingDrink(drink_number)
     if @drink_list.length > drink_number
       drink = @drink_list[drink_number]
-      
+
       if drink[1] <= @money and drink[2] > 0
         drink[2] -= 1
         @money -= drink[1]
         @sales += drink[1]
         #今はputsですが、ここに出る作業が入ります。
         puts '= buy drink : ' + drink[0]
-        
+
         #購入した場合、残ったお金を全部払い戻しする。
         refundAllMoney()
       end
     end
     #お金が足りない場合、何も行いません。
   end
-  
+
   #残ったお金を全部払い戻しする。
   def refundAllMoney()
     refundMoney(@money)
     @money = 0
   end
-  
+
   #お金を払い戻し作業は全部そこでする。
   # TODO: 直接呼ぶのは思えません。
   private def refundMoney(refund_money)
@@ -153,8 +155,8 @@ while command != 'end'
     end
   elsif command.integer?
     dihanki.putMoney(command.to_i)
-  else 
+  else
     puts 'bad command'
   end
-  
+
 end
