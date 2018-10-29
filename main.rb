@@ -1,4 +1,4 @@
-#StringがIntegerかを確認するための設定
+﻿#StringがIntegerかを確認するための設定
 class String
   def integer?
     Integer(self) != nil rescue false
@@ -87,7 +87,7 @@ class Dihanki
         puts '= buy drink : ' + drink[0]
         
         #購入した場合、残ったお金を全部払い戻しする。
-        refundAllMoney()
+        #refundAllMoney()
       end
     end
     #お金が足りない場合、何も行いません。
