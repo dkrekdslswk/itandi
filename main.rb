@@ -59,23 +59,15 @@ class Jihanki
   def getMoney()
     @money
   end
-  
+
   #お金の投入
   #10,50,100,500,1000以外のが投入された場合は、投入金額に加算せず、それをそのまま釣り銭としてユーザに出力する。
-  def putMoney(argMoney)
-    case argMoney
-      when 10
-        @money += argMoney
-      when 50
-        @money += argMoney
-      when 100
-        @money += argMoney
-      when 500
-        @money += argMoney
-      when 1000
-        @money += argMoney
-    else 
-      refundMoney(argMoney)
+  def putMoney(arg_money)
+    case arg_money
+      when 10, 50, 100, 500, 1000
+        @money += arg_money
+    else
+      refundMoney(arg_money)
     end
   end
 
@@ -83,7 +75,7 @@ class Jihanki
   def getDrinkList()
     @drinkList
   end
-  
+
   #購入できるドリンクリストのドリンク番号を出す。
   def getInhabitableDrinkList()
     drinkList = self.getDrinkList()
@@ -100,7 +92,7 @@ class Jihanki
 
     inhabitableDrinkList
   end
-  
+
   #自販機の売上金額を出す。
   def getSales()
     @sales
@@ -123,13 +115,13 @@ class Jihanki
     end
     #お金が足りない場合、何も行いません。
   end
-  
+
   #残ったお金を全部払い戻しする。
   def refundAllMoney()
     refundMoney(@money)
     @money = 0
   end
-  
+
   #お金を払い戻し作業は全部そこでする。
   # TODO: 直接呼ぶのは思えません。
   private def refundMoney(refundMoney)
@@ -189,5 +181,5 @@ while command != 'end'
   else 
     puts 'bad command'
   end
-  
+
 end
