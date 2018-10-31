@@ -85,9 +85,6 @@ class Dihanki
         @sales += drink[1]
         #今はputsですが、ここに出る作業が入ります。
         puts '= buy drink : ' + drink[0]
-        
-        #購入した場合、残ったお金を全部払い戻しする。
-        #refundAllMoney()
       end
     end
     #お金が足りない場合、何も行いません。
