@@ -14,15 +14,15 @@ class Drink
   end
 
   def getName
-    return @name
+    @name
   end
   
   def getPrice
-    return @price
+    @price
   end
   
   def getStock
-    return @stock
+    @stock
   end
   
   def updateStock(argCount)
@@ -41,7 +41,7 @@ class Drink
 end
 
 #自販機Class
-class Dihanki
+class Jihanki
 
   #変数を設定
   def initialize
@@ -57,7 +57,7 @@ class Dihanki
 
   #return 現在のお客様が投入したお金
   def getMoney()
-    return @money
+    @money
   end
   
   #お金の投入
@@ -81,7 +81,7 @@ class Dihanki
 
   #自販機のジュースの情報を出す。
   def getDrinkList()
-    return @drinkList
+    @drinkList
   end
   
   #購入できるドリンクリストのドリンク番号を出す。
@@ -97,12 +97,13 @@ class Dihanki
       end
         drinkNumber += 1
     end
-    return inhabitableDrinkList
+
+    inhabitableDrinkList
   end
   
   #自販機の売上金額を出す。
   def getSales()
-    return @sales
+    @sales
   end
 
   #ドリンクを買う。
@@ -117,7 +118,7 @@ class Dihanki
         @money -= drink.getPrice
         @sales += drink.getPrice
         #今はputsですが、ここに出る作業が入ります。
-        puts '= buy drink : ' + drink[0]
+        puts '= buy drink : ' + drink.getName
       end
     end
     #お金が足りない場合、何も行いません。
@@ -138,7 +139,7 @@ class Dihanki
 end
 
 #自販機のObject
-dihanki = Dihanki.new()
+jihanki = Jihanki.new()
 
 #ユーザーの命令を受け入れる。
 command = ''
@@ -147,9 +148,9 @@ while command != 'end'
   puts '===================='
   puts '[drinkNumber]'
   drinkNumber = 0
-  inhabitableDrinkList = dihanki.getInhabitableDrinkList()
+  inhabitableDrinkList = jihanki.getInhabitableDrinkList()
   inhabitableCount = 0
-  dihanki.getDrinkList.each() do |drink|
+  jihanki.getDrinkList.each() do |drink|
     if inhabitableCount < inhabitableDrinkList.length
       if drinkNumber == inhabitableDrinkList[inhabitableCount]
         print '*'
@@ -158,12 +159,12 @@ while command != 'end'
         print ' '
       end
     end
-    puts '[' + drinkNumber.to_s + '] ' + drink.getBuyningState(dihanki.getMoney()) + ' - ' + drink.getName + '(' + drink.getPrice.to_s + '￥) stock : ' + drink.getStock.to_s
+    puts '[' + drinkNumber.to_s + '] ' + drink.getBuyningState(jihanki.getMoney()) + ' - ' + drink.getName + '(' + drink.getPrice.to_s + '￥) stock : ' + drink.getStock.to_s
     drinkNumber += 1
   end
   puts '======  data  ======'
-  puts 'dihanki sales = ' + dihanki.getSales.to_s
-  puts 'user money  = ' + dihanki.getMoney.to_s
+  puts 'jihanki sales = ' + jihanki.getSales.to_s
+  puts 'user money  = ' + jihanki.getMoney.to_s
   puts '====  commands  ===='
   puts '[number]         : putMoney       (例:10,50,100,500,1000)'
   puts 'get[drinkNumber] : drink buying   (例:get0)'
@@ -176,15 +177,15 @@ while command != 'end'
   puts
   puts '===================='
   if command == 'ref'
-    dihanki.refundAllMoney
+    jihanki.refundAllMoney
   elsif command == 'end'
     puts 'Bye~'
   elsif command[0, 3] == 'get'
     if  command[3, command.length].integer?
-      dihanki.buyingDrink(command[3, command.length].to_i)
+      jihanki.buyingDrink(command[3, command.length].to_i)
     end
   elsif command.integer?
-    dihanki.putMoney(command.to_i)
+    jihanki.putMoney(command.to_i)
   else 
     puts 'bad command'
   end
