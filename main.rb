@@ -26,7 +26,7 @@ class Drink
   end
   
   def updateStock(argCount)
-    @stock = @stock + argCount
+    @stock += argCount
   end
   
   def getBuyningState(argMoney)
