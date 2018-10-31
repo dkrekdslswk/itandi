@@ -1,7 +1,7 @@
-require "./Drink"
+﻿require "./Drink"
 
 #自販機Class
-class Dihanki
+class Jihanki
 
   #変数を設定
   def initialize
@@ -17,31 +17,23 @@ class Dihanki
 
   #return 現在のお客様が投入したお金
   def getMoney()
-    return @money
+    @money
   end
   
   #お金の投入
   #10,50,100,500,1000以外のが投入された場合は、投入金額に加算せず、それをそのまま釣り銭としてユーザに出力する。
   def putMoney(argMoney)
     case argMoney
-      when 10
+      when 10, 50, 100, 500, 1000
         @money += argMoney
-      when 50
-        @money += argMoney
-      when 100
-        @money += argMoney
-      when 500
-        @money += argMoney
-      when 1000
-        @money += argMoney
-    else 
+    else
       refundMoney(argMoney)
     end
   end
 
   #自販機のジュースの情報を出す。
   def getDrinkList()
-    return @drinkList
+    @drinkList
   end
   
   #購入できるドリンクリストのドリンク番号を出す。
@@ -57,7 +49,8 @@ class Dihanki
       end
         drinkNumber += 1
     end
-    return inhabitableDrinkList
+    
+    inhabitableDrinkList
   end
   
   #drink update
@@ -128,7 +121,6 @@ class Dihanki
     end
     
     puts 'back main menu'
-    return 0
   end
   
   #new drink insert ui
@@ -176,7 +168,7 @@ class Dihanki
   
   #自販機の売上金額を出す。
   def getSales()
-    return @sales
+    @sales
   end
 
   #ドリンクを買う。
@@ -192,9 +184,6 @@ class Dihanki
         @sales += drink.getPrice
         #今はputsですが、ここに出る作業が入ります。
         puts '= buy drink : ' + drink.getName
-        
-        #購入した場合、残ったお金を全部払い戻しする。
-        #refundAllMoney()
       end
     end
     #お金が足りない場合、何も行いません。

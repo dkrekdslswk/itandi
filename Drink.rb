@@ -1,4 +1,4 @@
-#Drink Class
+﻿#Drink Class
 class Drink
   def initialize(argName, argPrice, argStock)
     self.setting(argName, argPrice, argStock)
@@ -11,7 +11,7 @@ class Drink
   end
 
   def getName
-    return @name
+    @name
   end
   
   def setName(argName)
@@ -19,7 +19,7 @@ class Drink
   end
   
   def getPrice
-    return @price
+    @price
   end
   
   def setPrice(argPrice)
@@ -27,7 +27,7 @@ class Drink
   end
   
   def getStock
-    return @stock
+    @stock
   end
   
   def setStock(argStock)
@@ -35,7 +35,7 @@ class Drink
   end
   
   def updateStock(argCount)
-    @stock = @stock + argCount
+    @stock += argCount
   end
   
   def getBuyningState(argMoney)
