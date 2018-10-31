@@ -1,4 +1,4 @@
-#StringがIntegerかを確認するための設定
+﻿#StringがIntegerかを確認するための設定
 class String
   def integer?
     Integer(self) != nil rescue false
@@ -117,10 +117,7 @@ class Dihanki
         @money -= drink.getPrice
         @sales += drink.getPrice
         #今はputsですが、ここに出る作業が入ります。
-        puts '= buy drink : ' + drink.getName
-        
-        #購入した場合、残ったお金を全部払い戻しする。
-        #refundAllMoney()
+        puts '= buy drink : ' + drink[0]
       end
     end
     #お金が足りない場合、何も行いません。
