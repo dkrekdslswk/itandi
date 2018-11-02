@@ -58,7 +58,7 @@ class Jihanki
   def drinkUpdateUI(argDrinkNumber)
     if argDrinkNumber >= @drinkList.length
       puts 'cannot find a drink number for drink list'
-      return -1
+      return false
     end
     commend = ''
     changeValue = ''
@@ -160,7 +160,7 @@ class Jihanki
   #drink delete
   def drinkDelete(drinkNumber)
     if drinkNumber >= @drinkList.length
-      return -1
+      return false
     else
       @drinkList.delete_at(drinkNumber)
     end
