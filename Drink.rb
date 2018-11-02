@@ -40,11 +40,11 @@ class Drink
   
   def getBuyningState(argMoney)
     if @stock == 0
-      return '無い'
+      '無い'
     elsif @price <= argMoney
-      return '可能'
+      '可能'
     else
-      return '有る'
+      '有る'
     end
   end
 end
