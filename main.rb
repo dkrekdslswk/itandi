@@ -48,27 +48,22 @@ while command != 'end'
 
   puts
   puts '===================='
-  if command == 'ref'
+  case command
+  when 'ref'
     jihanki.refundAllMoney
-  elsif command == 'end'
+  when 'end'
     puts 'Bye~'
-  elsif command[0, 3] == 'get'
-    if  command[3, command.length].integer?
-      jihanki.buyingDrink(command[3, command.length].to_i)
-    end
-  elsif command[0, 6] == 'update'
-    if  command[6, command.length].integer?
-      jihanki.drinkUpdateUI(command[6, command.length].to_i)
-    end
-  elsif command == 'insert'
+  when /^get[0-9]{1,}$/
+    jihanki.buyingDrink(command[3, command.length].to_i)
+  when 'insert'
     jihanki.drinkInsertUI()
-  elsif command[0, 6] == 'delete'
-    if  command[6, command.length].integer?
-      jihanki.drinkDelete(command[6, command.length].to_i)
-    end
-  elsif command.integer?
+  when /^update[0-9]{1,}$/
+    jihanki.drinkUpdateUI(command[6, command.length].to_i)
+  when /^delete[0-9]{1,}$/
+    jihanki.drinkDelete(command[6, command.length].to_i)
+  when /^[0-9]{1,}$/
     jihanki.putMoney(command.to_i)
-  else 
+  else
     puts 'bad command'
   end
 
