@@ -1,4 +1,5 @@
 ﻿require "./Drink"
+require "./StringIntegerCheck"
 
 #自販機Class
 class Jihanki
@@ -10,9 +11,9 @@ class Jihanki
     #自販機の売上金額
     @sales = 0
     #ドリンクの情報[ドリンクの番号]
-    @drinkList = [Drink.new('コーラ', 120, 5),
-                  Drink.new('レッドブル', 200, 5),
-                  Drink.new('水', 100, 5)]
+    @drinkList = [Drink.new('コーラ',     120, 5, 'coca cola',  Time.new(2018, 12, 15), 'PET'),
+                  Drink.new('レッドブル',  200, 5, 'オーストリア',  Time.new(2018, 12, 25), 'CAN'),
+                  Drink.new('水',        100, 5, 'トップページ',  Time.new(2019, 1, 15), 'PET')]
   end
 
   #return 現在のお客様が投入したお金
@@ -26,7 +27,7 @@ class Jihanki
     case argMoney
       when 10, 50, 100, 500, 1000
         @money += argMoney
-    else
+    else 
       refundMoney(argMoney)
     end
   end
@@ -49,51 +50,74 @@ class Jihanki
       end
         drinkNumber += 1
     end
-    
     inhabitableDrinkList
   end
   
   #drink update
   #TODO class drinkを直すとき確認してください。
-  def drinkUpdateUI(argDrinkNumber)
+  def drinkUpdateCall(argDrinkNumber)
     if argDrinkNumber >= @drinkList.length
       puts 'cannot find a drink number for drink list'
       return false
     end
+    
+    self.drinkUpdateUI(@drinkList[argDrinkNumber], argDrinkNumber)
+  end
+  
+  def drinkUpdateUI(argDrink, argNumber)
     commend = ''
     changeValue = ''
     
     puts '======================='
-    puts argDrinkNumber.to_s + '.' + @drinkList[argDrinkNumber].getName
-    puts 'price : ' + @drinkList[argDrinkNumber].getPrice.to_s
-    puts 'stock : ' + @drinkList[argDrinkNumber].getStock.to_s
+    puts argNumber.to_s + '.' + argDrink.getName
+    puts 'stock       : ' + argDrink.getStock.to_s
+    puts 'price       : ' + argDrink.getPrice.to_s
+    puts 'maker       : ' + argDrink.getMaker
+    puts 'shelf life  : ' + argDrink.getShelfLifeStrftime
+    puts 'container   : ' + argDrink.getContainer
     puts '======================='
     puts 'drinkUpdate'
     puts '(1)change name'
     puts '(2)change stock'
     puts '(3)change price'
+    puts '(4)change maker'
+    puts '(5)change shelf life'
+    puts '(6)change container'
     puts '(end)back main menu'
     puts '======================='
     while commend != 'end'
       print '> '
       commend = gets.chomp
       if commend != 'end'
-        print   argDrinkNumber.to_s + '.' + @drinkList[argDrinkNumber].getName
+        print   argNumber.to_s + '.' + argDrink.getName
         case commend
-        when '1'
-          puts
-          print '<= change name? : '
-        when '2'
-          puts  ', stock : ' + @drinkList[argDrinkNumber].getStock.to_s
-          print '<= change stock? : '
-        when '3'
-          puts  ', price : ' + @drinkList[argDrinkNumber].getPrice.to_s
-          print '<= change price? : '
+          when '1'
+            puts
+            print '<= change name? : '
+          when '2'
+            puts  ', stock : ' + argDrink.getStock.to_s
+            print '<= change stock? : '
+          when '3'
+            puts  ', price : ' + argDrink.getPrice.to_s
+            print '<= change price? : '
+          when '4'
+            puts  ', maker : ' + argDrink.getMaker
+            print '<= change maker? : '
+          when '5'
+            puts ', shelf life : ' + argDrink.getShelfLifeStrftime
+            puts 'year-month-day(ex : 2000-12-12, 2000-1-1)'
+            print '<= change shelf life? : '
+          when '6'
+            puts  ', container : ' + argDrink.getContainer
+            print Drink.getContainerType
+            puts
+            print '<= change container? : '
         else
           next 
         end
         changeValue = gets.chomp
 
+        # value check
         print '.'
         case commend
         when '2', '3'
@@ -101,45 +125,66 @@ class Jihanki
             puts 'is not integer'
             next
           end
+        when '5'
+          shelfLifeTimeSplit = changeValue.split('-')
+          checkTime = Time.new()
+          if shelfLifeTimeSplit.length != 3
+            puts 'is not date data type'
+            next
+          elsif not shelfLifeTimeSplit[0].integer? and shelfLifeTimeSplit[1].integer? and shelfLifeTimeSplit[2].integer?
+            puts 'date data type is not integer'
+            next
+          end
+          changeTime = Time.new(shelfLifeTimeSplit[0].to_i, shelfLifeTimeSplit[1].to_i, shelfLifeTimeSplit[2].to_i)
+        when '6'
+          if not Drink.getContainerType.include? changeValue
+            puts 'is not find container type'
+            next
+          end
         end
         
+        # change save
         print '.'
         case commend
         when ''
           when '1'
-            @drinkList[argDrinkNumber].setName(changeValue)
-            puts "new name : " + @drinkList[argDrinkNumber].getName
+            argDrink.setName(changeValue)
+            puts "new name : " + argDrink.getName
           when '2'
-            @drinkList[argDrinkNumber].setStock(changeValue)
-            puts "new stock : " + @drinkList[argDrinkNumber].getStock.to_s
+            argDrink.setStock(changeValue)
+            puts "new stock : " + argDrink.getStock.to_s
           when '3'
-            @drinkList[argDrinkNumber].setPrice(changeValue)
-            puts "new price : " + @drinkList[argDrinkNumber].getPrice.to_s
+            argDrink.setPrice(changeValue)
+            puts "new price : " + argDrink.getPrice.to_s
+          when '4'
+            argDrink.setMaker(changeValue)
+            puts "new maker : " + argDrink.getMaker
+          when '5'
+            argDrink.setShelfLife(changeTime)
+            puts "new shelf life : " + argDrink.getShelfLifeStrftime
+          when '6'
+            argDrink.setContainer(changeValue)
+            puts "new container : " + argDrink.getContainer
         end
         puts 'change clear'  
       end
     end
     
     puts 'back main menu'
+    return 1
   end
   
   #new drink insert ui
   def drinkInsertUI
-    tempName = ''
-    tempStock = ''
-    tempPrice = ''
+    tempDrink = Drink.new('defaultName', 100, 5, 'defaultMaker', Time.new, 'CAN')
     commend = ''
     
     while (commend != 'y') and (commend != 'n')
-      print 'name : '
-      tempName = gets.chomp
-      print 'price : '
-      tempPrice = gets.chomp
-      print 'stock : '
-      tempStock = gets.chomp
+      self.drinkUpdateUI(tempDrink, 'insert')
       
       while (commend != 'y') and (commend != 'r') and (commend != 'n')
-        puts tempName + ', price : ' + tempPrice + ', stock : ' + tempStock
+        puts tempDrink.getName + ', price : ' + tempDrink.getPrice.to_s + ', stock : ' + tempDrink.getStock.to_s
+        puts 'maker : ' + tempDrink.getMaker + ', shelf life : ' + tempDrink.getShelfLifeStrftime + ', container : ' + tempDrink.getContainer
         puts 'save : y, rectify : r, cancel : n'
         print '> '
         commend = gets.chomp
@@ -147,20 +192,15 @@ class Jihanki
     end
     
     if commend == 'y'
-      self.drinkInsert(tempName, tempPrice, tempStock)
+      @drinkList.push(tempDrink)
       puts 'save clear'
     end
-  end
-  
-  # new drink in drink list
-  def drinkInsert(argName, argPrice, argStock)
-    @drinkList.push(Drink.new(argName, argPrice, argStock))
   end
   
   #drink delete
   def drinkDelete(drinkNumber)
     if drinkNumber >= @drinkList.length
-      return false
+      false
     else
       @drinkList.delete_at(drinkNumber)
     end
@@ -168,7 +208,7 @@ class Jihanki
   
   #自販機の売上金額を出す。
   def getSales()
-    @sales
+    return @sales
   end
 
   #ドリンクを買う。

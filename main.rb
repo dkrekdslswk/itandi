@@ -1,13 +1,7 @@
-﻿require './Jihanki'
+require "./Jihanki"
+require "./StringIntegerCheck"
 
-#StringがIntegerかを確認するための設定
-class String
-  def integer?
-    Integer(self) != nil rescue false
-  end
-end
-
-#自販機のObjectSS
+#自販機のObject
 jihanki = Jihanki.new()
 
 #ユーザーの命令を受け入れる。
@@ -28,7 +22,12 @@ while command != 'end'
         print ' '
       end
     end
-    puts '[' + drinkNumber.to_s + '] ' + drink.getBuyningState(jihanki.getMoney()) + ' - ' + drink.getName + '(' + drink.getPrice.to_s + '￥) stock : ' + drink.getStock.to_s
+    print '[' + drinkNumber.to_s + '] ' + drink.getBuyningState(jihanki.getMoney())
+    print ' - ' + drink.getName + '(' + drink.getPrice.to_s + '￥)'
+    print 'stock : ' + drink.getStock.to_s
+    print ', maker : ' + drink.getMaker
+    print ', ' + drink.getContainer
+    puts ', ' + drink.getShelfLifeStrftime
     drinkNumber += 1
   end
   puts '======  data  ======'
@@ -66,5 +65,4 @@ while command != 'end'
   else
     puts 'bad command'
   end
-
 end

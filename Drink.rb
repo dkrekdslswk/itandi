@@ -1,13 +1,22 @@
 ﻿#Drink Class
 class Drink
-  def initialize(argName, argPrice, argStock)
-    self.setting(argName, argPrice, argStock)
+  @@containerType = ['CAN', 'PET', 'ETC']
+    
+  def initialize(argName, argPrice, argStock, argMaker, argShelfLife, argContainer)
+    self.setting(argName, argPrice, argStock, argMaker, argShelfLife, argContainer)
   end
   
-  def setting(argName, argPrice, argStock)
+  def setting(argName, argPrice, argStock, argMaker, argShelfLife, argContainer)
     self.setName(argName)
     self.setPrice(argPrice)
     self.setStock(argStock)
+    self.setMaker(argMaker)
+    self.setShelfLife(argShelfLife)
+    self.setContainer(argContainer)
+  end
+  
+  def self.getContainerType
+    @@containerType
   end
 
   def getName
@@ -36,6 +45,44 @@ class Drink
   
   def updateStock(argCount)
     @stock += argCount
+  end
+
+  def setMaker(argMaker)
+    @maker = argMaker
+  end
+  
+  def getMaker
+    @maker
+  end
+
+  def setShelfLife(argShelfLife)
+    if argShelfLife.kind_of?(Time)
+      checkShelfLife = argShelfLife
+    elsif @shelfLife.nil?
+      checkShelfLife = Time.new
+    end
+    @shelfLife = checkShelfLife
+  end
+
+  def getShelfLife
+    @shelfLife
+  end
+  
+  def getShelfLifeStrftime
+    @shelfLife.strftime("%Y-%m-%d")
+  end
+
+  def setContainer(argContainer)
+    if @@containerType.include? argContainer
+      checkContainer = argContainer
+    elsif @container.nil?
+      checkContainer = @@containerType[0]
+    end
+    @container = checkContainer
+  end
+  
+  def getContainer
+    @container
   end
   
   def getBuyningState(argMoney)
