@@ -57,7 +57,7 @@ while command != 'end'
   when 'insert'
     jihanki.drinkInsertUI()
   when /^update[0-9]{1,}$/
-    jihanki.drinkUpdateUI(command[6, command.length].to_i)
+    jihanki.drinkUpdateCall(command[6, command.length].to_i)
   when /^delete[0-9]{1,}$/
     jihanki.drinkDelete(command[6, command.length].to_i)
   when /^[0-9]{1,}$/

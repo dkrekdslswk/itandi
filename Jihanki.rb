@@ -27,7 +27,7 @@ class Jihanki
     case argMoney
       when 10, 50, 100, 500, 1000
         @money += argMoney
-    else 
+    else
       refundMoney(argMoney)
     end
   end
