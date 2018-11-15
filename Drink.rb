@@ -1,6 +1,13 @@
 ﻿#Drink Class
 class Drink
   @containerTypes = ['CAN', 'PET', 'ETC']
+  
+  class << self
+    attr_reader :containerTypes
+  end
+
+  attr_accessor :name :price :stock :maker
+  attr_reader   :shelfLife :container
     
   def initialize(argName, argPrice, argStock, argMaker, argShelfLife, argContainer)
     self.setting(argName, argPrice, argStock, argMaker, argShelfLife, argContainer)
@@ -14,17 +21,6 @@ class Drink
     self.setShelfLife(argShelfLife)
     self.setContainer(argContainer)
   end
-  
-  class << self
-    attr_reader :containerTypes
-  end
-
-  attr_accessor :name
-  attr_accessor :price
-  attr_accessor :stock
-  attr_accessor :maker
-  attr_reader   :shelfLife
-  attr_reader   :container
   
   def updateStock(argCount)
     @stock += argCount

@@ -4,6 +4,8 @@ require "./StringIntegerCheck"
 #自販機Class
 class Jihanki
 
+  attr_reader  :money :drinkList :sales
+
   #変数を設定
   def initialize
     #お客様が投入したお金
@@ -15,15 +17,6 @@ class Jihanki
                   Drink.new('レッドブル',  200, 5, 'オーストリア',  Time.new(2018, 12, 25), 'CAN'),
                   Drink.new('水',        100, 5, 'トップページ',  Time.new(2019, 1, 15), 'PET')]
   end
-
-  #return 現在のお客様が投入したお金
-  attr_reader  :money
-
-  #自販機のジュースの情報を出す。
-  attr_reader  :drinkList
-
-  #自販機の売上金額を出す。
-  attr_reader  :sales
   
   #お金の投入
   #10,50,100,500,1000以外のが投入された場合は、投入金額に加算せず、それをそのまま釣り銭としてユーザに出力する。
