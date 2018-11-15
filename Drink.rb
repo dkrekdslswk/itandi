@@ -1,94 +1,61 @@
 ﻿#Drink Class
 class Drink
-  @@containerType = ['CAN', 'PET', 'ETC']
+  @containerTypes = ['CAN', 'PET', 'ETC']
     
   def initialize(argName, argPrice, argStock, argMaker, argShelfLife, argContainer)
     self.setting(argName, argPrice, argStock, argMaker, argShelfLife, argContainer)
   end
   
   def setting(argName, argPrice, argStock, argMaker, argShelfLife, argContainer)
-    self.setName(argName)
-    self.setPrice(argPrice)
-    self.setStock(argStock)
-    self.setMaker(argMaker)
+    self.name = argName.to_s
+    self.price = argPrice.to_i
+    self.stock = argStock.to_i
+    self.maker = argMaker.to_s
     self.setShelfLife(argShelfLife)
     self.setContainer(argContainer)
   end
   
-  def self.getContainerType
-    @@containerType
+  class << self
+    attr_reader :containerTypes
   end
 
-  def getName
-    @name
-  end
-  
-  def setName(argName)
-    @name = argName.to_s
-  end
-  
-  def getPrice
-    @price
-  end
-  
-  def setPrice(argPrice)
-    @price = argPrice.to_i
-  end
-  
-  def getStock
-    @stock
-  end
-  
-  def setStock(argStock)
-    @stock = argStock.to_i
-  end
+  attr_accessor :name
+  attr_accessor :price
+  attr_accessor :stock
+  attr_accessor :maker
+  attr_reader   :shelfLife
+  attr_reader   :container
   
   def updateStock(argCount)
     @stock += argCount
   end
 
-  def setMaker(argMaker)
-    @maker = argMaker
-  end
-  
-  def getMaker
-    @maker
-  end
-
   def setShelfLife(argShelfLife)
     if argShelfLife.kind_of?(Time)
       checkShelfLife = argShelfLife
-    elsif @shelfLife.nil?
+    elsif self.shelfLife.nil?
       checkShelfLife = Time.new
     end
     @shelfLife = checkShelfLife
   end
-
-  def getShelfLife
-    @shelfLife
-  end
   
   def getShelfLifeStrftime
-    @shelfLife.strftime("%Y-%m-%d")
+    self.shelfLife.strftime("%Y-%m-%d")
   end
 
   def setContainer(argContainer)
-    if @@containerType.include? argContainer
+    if Drink.containerTypes.include? argContainer
       checkContainer = argContainer
-    elsif @container.nil?
-      checkContainer = @@containerType[0]
+    elsif self.container.nil?
+      checkContainer = Drink.containerTypes[0]
     end
     @container = checkContainer
   end
   
-  def getContainer
-    @container
-  end
-  
   def getBuyningState(argMoney)
-    if @stock == 0
+    if self.stock == 0
       '無い'
-    elsif @price <= argMoney
+    elsif self.price <= argMoney
       '可能'
     else
       '有る'

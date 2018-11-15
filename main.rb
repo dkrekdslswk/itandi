@@ -4,6 +4,8 @@ require "./StringIntegerCheck"
 #自販機のObject
 jihanki = Jihanki.new()
 
+print Drink.containerTypes
+
 #ユーザーの命令を受け入れる。
 command = ''
 
@@ -13,7 +15,7 @@ while command != 'end'
   drinkNumber = 0
   inhabitableDrinkList = jihanki.getInhabitableDrinkList()
   inhabitableCount = 0
-  jihanki.getDrinkList.each() do |drink|
+  jihanki.drinkList.each() do |drink|
     if inhabitableCount < inhabitableDrinkList.length
       if drinkNumber == inhabitableDrinkList[inhabitableCount]
         print '*'
@@ -22,17 +24,17 @@ while command != 'end'
         print ' '
       end
     end
-    print '[' + drinkNumber.to_s + '] ' + drink.getBuyningState(jihanki.getMoney())
-    print ' - ' + drink.getName + '(' + drink.getPrice.to_s + '￥)'
-    print 'stock : ' + drink.getStock.to_s
-    print ', maker : ' + drink.getMaker
-    print ', ' + drink.getContainer
+    print '[' + drinkNumber.to_s + '] ' + drink.getBuyningState(jihanki.money)
+    print ' - ' + drink.name + '(' + drink.price.to_s + '￥)'
+    print 'stock : ' + drink.stock.to_s
+    print ', maker : ' + drink.maker
+    print ', ' + drink.container
     puts ', ' + drink.getShelfLifeStrftime
     drinkNumber += 1
   end
   puts '======  data  ======'
-  puts 'jihanki sales = ' + jihanki.getSales.to_s
-  puts 'user money  = ' + jihanki.getMoney.to_s
+  puts 'jihanki sales = ' + jihanki.sales.to_s
+  puts 'user money  = ' + jihanki.money.to_s
   puts '====  commands  ===='
   puts '[number]            : putMoney       (例:10,50,100,500,1000)'
   puts 'get[drinkNumber]    : drink buying   (例:get0)'

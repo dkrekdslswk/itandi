@@ -17,9 +17,13 @@ class Jihanki
   end
 
   #return 現在のお客様が投入したお金
-  def getMoney()
-    @money
-  end
+  attr_reader  :money
+
+  #自販機のジュースの情報を出す。
+  attr_reader  :drinkList
+
+  #自販機の売上金額を出す。
+  attr_reader  :sales
   
   #お金の投入
   #10,50,100,500,1000以外のが投入された場合は、投入金額に加算せず、それをそのまま釣り銭としてユーザに出力する。
@@ -31,20 +35,15 @@ class Jihanki
       refundMoney(argMoney)
     end
   end
-
-  #自販機のジュースの情報を出す。
-  def getDrinkList()
-    @drinkList
-  end
   
   #購入できるドリンクリストのドリンク番号を出す。
   def getInhabitableDrinkList()
-    drinkList = self.getDrinkList()
+    drinkList = self.drinkList
     inhabitableDrinkList = []
     saveP = 0
     drinkNumber = 0
     drinkList.each() do |drink|
-      if drink.getBuyningState(@money) == '可能'
+      if drink.getBuyningState(self.money) == '可能'
         inhabitableDrinkList[saveP] = drinkNumber
         saveP += 1
       end
@@ -56,12 +55,12 @@ class Jihanki
   #drink update
   #TODO class drinkを直すとき確認してください。
   def drinkUpdateCall(argDrinkNumber)
-    if argDrinkNumber >= @drinkList.length
+    if argDrinkNumber >= self.drinkList.length
       puts 'cannot find a drink number for drink list'
       return false
     end
     
-    self.drinkUpdateUI(@drinkList[argDrinkNumber], argDrinkNumber)
+    self.drinkUpdateUI(self.drinkList[argDrinkNumber], argDrinkNumber)
   end
   
   def drinkUpdateUI(argDrink, argNumber)
@@ -69,12 +68,12 @@ class Jihanki
     changeValue = ''
     
     puts '======================='
-    puts argNumber.to_s + '.' + argDrink.getName
-    puts 'stock       : ' + argDrink.getStock.to_s
-    puts 'price       : ' + argDrink.getPrice.to_s
-    puts 'maker       : ' + argDrink.getMaker
+    puts argNumber.to_s + '.' + argDrink.name
+    puts 'stock       : ' + argDrink.stock.to_s
+    puts 'price       : ' + argDrink.price.to_s
+    puts 'maker       : ' + argDrink.maker
     puts 'shelf life  : ' + argDrink.getShelfLifeStrftime
-    puts 'container   : ' + argDrink.getContainer
+    puts 'container   : ' + argDrink.container
     puts '======================='
     puts 'drinkUpdate'
     puts '(1)change name'
@@ -89,27 +88,27 @@ class Jihanki
       print '> '
       commend = gets.chomp
       if commend != 'end'
-        print   argNumber.to_s + '.' + argDrink.getName
+        print   argNumber.to_s + '.' + argDrink.name
         case commend
           when '1'
             puts
             print '<= change name? : '
           when '2'
-            puts  ', stock : ' + argDrink.getStock.to_s
+            puts  ', stock : ' + argDrink.stock.to_s
             print '<= change stock? : '
           when '3'
-            puts  ', price : ' + argDrink.getPrice.to_s
+            puts  ', price : ' + argDrink.price.to_s
             print '<= change price? : '
           when '4'
-            puts  ', maker : ' + argDrink.getMaker
+            puts  ', maker : ' + argDrink.maker
             print '<= change maker? : '
           when '5'
             puts ', shelf life : ' + argDrink.getShelfLifeStrftime
             puts 'year-month-day(ex : 2000-12-12, 2000-1-1)'
             print '<= change shelf life? : '
           when '6'
-            puts  ', container : ' + argDrink.getContainer
-            print Drink.getContainerType
+            puts  ', container : ' + argDrink.container
+            print Drink.containerTypes
             puts
             print '<= change container? : '
         else
@@ -137,7 +136,7 @@ class Jihanki
           end
           changeTime = Time.new(shelfLifeTimeSplit[0].to_i, shelfLifeTimeSplit[1].to_i, shelfLifeTimeSplit[2].to_i)
         when '6'
-          if not Drink.getContainerType.include? changeValue
+          if not Drink.containerTypes.include? changeValue
             puts 'is not find container type'
             next
           end
@@ -148,23 +147,23 @@ class Jihanki
         case commend
         when ''
           when '1'
-            argDrink.setName(changeValue)
-            puts "new name : " + argDrink.getName
+            argDrink.name  = changeValue.to_s
+            puts "new name : " + argDrink.name
           when '2'
-            argDrink.setStock(changeValue)
-            puts "new stock : " + argDrink.getStock.to_s
+            argDrink.stock  = changeValue.to_i
+            puts "new stock : " + argDrink.stock.to_s
           when '3'
-            argDrink.setPrice(changeValue)
-            puts "new price : " + argDrink.getPrice.to_s
+            argDrink.price  = changeValue.to_i
+            puts "new price : " + argDrink.price.to_s
           when '4'
-            argDrink.setMaker(changeValue)
-            puts "new maker : " + argDrink.getMaker
+            argDrink.maker  = changeValue.to_s
+            puts "new maker : " + argDrink.maker
           when '5'
             argDrink.setShelfLife(changeTime)
             puts "new shelf life : " + argDrink.getShelfLifeStrftime
           when '6'
             argDrink.setContainer(changeValue)
-            puts "new container : " + argDrink.getContainer
+            puts "new container : " + argDrink.container
         end
         puts 'change clear'  
       end
@@ -183,8 +182,8 @@ class Jihanki
       self.drinkUpdateUI(tempDrink, 'insert')
       
       while (commend != 'y') and (commend != 'r') and (commend != 'n')
-        puts tempDrink.getName + ', price : ' + tempDrink.getPrice.to_s + ', stock : ' + tempDrink.getStock.to_s
-        puts 'maker : ' + tempDrink.getMaker + ', shelf life : ' + tempDrink.getShelfLifeStrftime + ', container : ' + tempDrink.getContainer
+        puts tempDrink.name + ', price : ' + tempDrink.price.to_s + ', stock : ' + tempDrink.stock.to_s
+        puts 'maker : ' + tempDrink.maker + ', shelf life : ' + tempDrink.getShelfLifeStrftime + ', container : ' + tempDrink.container
         puts 'save : y, rectify : r, cancel : n'
         print '> '
         commend = gets.chomp
@@ -199,31 +198,26 @@ class Jihanki
   
   #drink delete
   def drinkDelete(drinkNumber)
-    if drinkNumber >= @drinkList.length
+    if drinkNumber >= self.drinkList.length
       false
     else
       @drinkList.delete_at(drinkNumber)
     end
-  end
-  
-  #自販機の売上金額を出す。
-  def getSales()
-    return @sales
   end
 
   #ドリンクを買う。
   #購入した場合、残ったお金を全部払い戻しする。
   #お金が足りない場合、何も行いません。
   def buyingDrink(drinkNumber)
-    if @drinkList.length > drinkNumber
-      drink = @drinkList[drinkNumber]
+    if self.drinkList.length > drinkNumber
+      drink = self.drinkList[drinkNumber]
       
-      if drink.getBuyningState(@money) == '可能'
+      if drink.getBuyningState(self.money) == '可能'
         drink.updateStock(-1)
-        @money -= drink.getPrice
-        @sales += drink.getPrice
+        @money -= drink.price
+        @sales += drink.price
         #今はputsですが、ここに出る作業が入ります。
-        puts '= buy drink : ' + drink.getName
+        puts '= buy drink : ' + drink.name
       end
     end
     #お金が足りない場合、何も行いません。
@@ -231,7 +225,7 @@ class Jihanki
   
   #残ったお金を全部払い戻しする。
   def refundAllMoney()
-    refundMoney(@money)
+    refundMoney(self.money)
     @money = 0
   end
   
